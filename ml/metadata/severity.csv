@@ -1,0 +1,12 @@
+Condition,Sub_Issue,Severity,Advice,Doctor_Required
+Acne,Heavy Inflammation,Severe,Avoid touching face avoid oily food. Consult dermatologist.,Recommended
+Acne,Redness,Moderate,Avoid oily food keep skin clean.,Not required
+Acne,None,Mild,Maintain good hygiene and use recommended products.,Not required
+Wrinkles,None,Moderate,Use retinol consistently at night always use sunscreen.,Not required
+Pigmentation,None,Moderate,Apply Vitamin C in the morning always use sunscreen.,Not required
+Dark Circles,None,Mild,Get adequate sleep apply under-eye serum.,Not required
+Normal,None,Good,Maintain current routine and apply sunscreen.,Not required
+Rosacea,None,Moderate,Use gentle cleansers avoid direct sun and spicy foods.,Not required
+Rosacea,Severe Redness,Severe,Requires medical diagnosis and prescription treatment.,Recommended
+Milia,None,Mild,Exfoliate gently with salicylic acid. Do not squeeze.,Not required
+Dermatitis Perioral,None,Moderate,Stop all heavy creams and cosmetics around mouth.,Recommended

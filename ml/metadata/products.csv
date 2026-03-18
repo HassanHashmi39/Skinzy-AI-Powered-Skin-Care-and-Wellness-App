@@ -1,0 +1,17 @@
+Condition,Category,Name,Brand,Price,Tier
+Acne,Face Wash,Saeed Ghani Face Wash,Saeed Ghani,Rs. 450,Budget
+Acne,Serum,MandelAC Serum,Jenpharm,Rs. 1200,Mid-Range
+Acne,Cleanser,Neutrogena Acne Wash,Neutrogena,Rs. 3500,Premium
+Wrinkles,Face Wash,Gentle Cleanser,Cerave,Rs. 2000,Mid-Range
+Wrinkles,Serum,Retinol Serum,The Ordinary,Rs. 3500,Premium
+Pigmentation,Face Wash,Vitamin C Cleanser,Vince,Rs. 850,Budget
+Pigmentation,Serum,Vitamin C Serum,Jenpharm,Rs. 1450,Mid-Range
+Dark Circles,Under Eye Cream,Revitalize Eye Cream,Jenpharm,Rs. 1250,Mid-Range
+Dark Circles,Serum,Caffeine Solution,The Ordinary,Rs. 2100,Premium
+Normal,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1150,Mid-Range
+Rosacea,Cleanser,Cetaphil Gentle Cleanser,Cetaphil,Rs. 1800,Mid-Range
+Rosacea,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1100,Mid-Range
+Milia,Exfoliant,Salicylic Acid 2%,The Ordinary,Rs. 2400,Premium
+Milia,Face Wash,Saeed Ghani Neem Wash,Saeed Ghani,Rs. 450,Budget
+Dermatitis Perioral,Cleanser,Cerave Hydrating Cleanser,Cerave,Rs. 2500,Premium
+Dermatitis Perioral,Repair Cream,Physiogel Calming Relief,Physiogel,Rs. 3000,Premium
