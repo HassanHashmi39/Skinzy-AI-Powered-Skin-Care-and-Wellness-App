@@ -59,6 +59,5 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
-    console.log(`🌐 External access available on: http://10.175.179.82:${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });

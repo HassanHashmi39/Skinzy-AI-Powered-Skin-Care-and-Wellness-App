@@ -98,8 +98,7 @@ export default function SkinAnalysisPage() {
         if (!image) return;
 
         // In a real app, you would use your AI server URL
-        // From your backend logs, your IP is: 10.175.179.82
-        const AI_SERVER_URL = 'http://10.175.179.82:5005/analyze'; 
+        const AI_SERVER_URL = process.env.EXPO_PUBLIC_AI_SERVER_URL || 'http://10.175.179.82:5005/analyze'; 
 
         try {
             // Simulated delay for progress bar effect

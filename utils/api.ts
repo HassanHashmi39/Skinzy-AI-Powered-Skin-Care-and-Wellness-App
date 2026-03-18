@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // ✅ MERN Backend Base URL
 // Change this to your deployed backend URL when going to production
-const API_BASE_URL = 'http://10.175.179.82:4444/api';
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.175.179.82:4444/api';
 
 // ─────────────────────────────────────────────
 // Token helpers (stored in AsyncStorage)
