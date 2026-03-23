@@ -1,50 +1,106 @@
-# Welcome to your Expo app 👋
+# Skinzy (AI-Powered Skin Care & Wellness App) ✨
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Skinzy is a comprehensive, full-stack AI-driven application designed to revolutionize skin health. By combining advanced computer vision with personalized medical history, Skinzy provides professional-grade skin analysis, condition tracking, and localized product recommendations for Pakistani skin types.
 
-## Get started
+---
 
-1. Install dependencies
+## 🚀 Key Features
 
-   ```bash
-   npm install
-   ```
+### 📋 For Patients
+- **AI Skin Analysis**: Advanced disease detection (Acne, Eczema, Rosacea, etc.) using TensorFlow and MobileNetV2.
+- **Personalized Action Plans**: Automated morning and night routines based on AI findings.
+- **History Tracking**: Visual progress logs of your skin's health over time.
+- **Smart Recommendations**: Product suggestions from top local brands (Jenpharm, Saeed Ghani, Vince, etc.) tailored to your condition.
+- **Real-time Chat**: Secure messaging with dermatologists for professional advice.
+- **Appointment Booking**: Seamlessly book and manage consultations with skin specialists.
 
-2. Start the app
+### 🩺 For Doctors
+- **Patient Dashboard**: Comprehensive view of patient history and AI analysis results.
+- **Appointment Management**: Track and manage upcoming consultations.
+- **Secure Communication**: Built-in chat system for remote diagnosis and support.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🛠 Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Frontend**: [Expo](https://expo.dev) / React Native (Native iOS/Android & Web)
+- **Backend API**: Node.js, Express, MongoDB
+- **AI/ML Server**: Python, Flask, TensorFlow (MobileNetV2), OpenCV
+- **Authentication**: JWT (JSON Web Tokens)
+- **State Management**: React Hooks & Context API
+- **Styling**: NativeWind (Tailwind CSS for React Native)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 📂 Project Structure
 
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+SkinzyApp/
+├── app/                # React Native (Expo Router) Frontend
+├── backend/            # Node.js + Express API
+├── ml/                 # Python Flask AI Server & ML Model
+├── components/         # Reusable UI Components
+├── utils/              # API helpers and general utilities
+├── hooks/              # Custom React hooks
+└── constants/          # App-wide constants and styles
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## ⚙️ Installation & Setup
 
-To learn more about developing your project with Expo, look at the following resources:
+### 1. Prerequisite
+Ensure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18+)
+- [Python](https://www.python.org/) (v3.9+)
+- [MongoDB](https://www.mongodb.com/) (Local or Atlas)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### 2. Global Dependencies
+```bash
+npm install -g expo-cli
+```
 
-## Join the community
+### 3. Backend Setup
+```bash
+cd backend
+npm install
+# Create a .env file (refer to backend/README.md)
+npm run dev
+```
 
-Join our community of developers creating universal apps.
+### 4. AI Server Setup
+```bash
+cd ml
+pip install -r requirements.txt
+python app.py
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 5. Frontend Setup
+```bash
+npm install
+# To run on Web:
+npm run web
+# To run on Mobile (requires Expo Go app):
+npm start
+```
+
+---
+
+## 🧪 Training the AI Model
+If you're interested in refining the model:
+1. Ensure your dataset is in the `ml/dataset` directory.
+2. Run `python ml/train_pro.py` for an optimized training pipeline.
+
+---
+
+## 🌐 Deployment Recommendation
+For a free, full-stack deployment:
+- **Frontend**: [Netlify](https://www.netlify.com/)
+- **Backend**: [Render](https://render.com/) or [Koyeb](https://www.koyeb.com/)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- **AI Server**: [Hugging Face Spaces](https://huggingface.co/spaces) (Docker/Flask CPU)
+
+---
+
+## 👨‍💻 Contributors
+Developed with ❤️ by the Skinzy Team.
