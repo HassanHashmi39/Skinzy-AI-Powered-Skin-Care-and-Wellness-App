@@ -4,15 +4,50 @@ import os
 
 # 🧩 Step 1: Real Dataset Classes Structure (Alphabetical for Keras mappings)
 DISEASES = [
-    'Acne',
+    'Acne Vulgaris',
+    'Actinic Keratosis',
+    'Basal Cell Carcinoma',
+    'Bullous Disease',
+    'Cellulitis',
+    'Comedones',
+    'Contact Dermatitis',
+    'Cystic Acne',
     'Dark Circles',
-    'Dermatitis Perioral',
+    'Eczema (Atopic Dermatitis)',
+    'Enlarged Pores',
+    'Exanthems and Drug Eruptions',
+    'Folliculitis',
+    'Freckles',
+    'Fungal Acne',
+    'Fungal Infection (Tinea Faciei)',
+    'Herpes Simplex (Cold Sores)',
+    'Hormonal Acne',
+    'Impetigo',
+    'Keratosis Pilaris',
+    'Lentigines',
+    'Lupus',
+    'Melanoma',
+    'Melasma',
     'Milia',
     'Normal',
-    'Pigmentation',
+    'Perioral Dermatitis',
+    'Post-Inflammatory Hyperpigmentation (PIH)',
+    'Psoriasis',
     'Rosacea',
+    'Sebaceous Hyperplasia',
+    'Seborrheic Dermatitis',
+    'Seborrheic Keratosis',
+    'Skin Tags',
+    'Squamous Cell Carcinoma',
+    'Systemic Disease',
+    'Urticaria',
+    'Vascular Tumors',
+    'Vasculitis',
+    'Vitiligo',
+    'Warts',
     'Wrinkles'
 ]
+
 
 # 🧩 Load directly from the CSV metadata mapped to Step 1 & 7
 def load_products_from_csv():
@@ -52,9 +87,25 @@ def load_severity_from_csv():
             severity_map[key] = {
                 'Severity': row['Severity'],
                 'Advice': row['Advice'],
-                'Doctor_Required': row['Doctor_Required']
+                'Doctor_Required': row['Doctor_Required'],
+                'Dos': row.get('Dos', ''),
+                'Donts': row.get('Donts', ''),
+                'Morning_Routine': row.get('Morning_Routine', ''),
+                'Night_Routine': row.get('Night_Routine', '')
             }
     return severity_map
 
+def load_remedies_from_csv():
+    filepath = os.path.join(os.path.dirname(__file__), 'metadata', 'remedies.csv')
+    remedies_map = {}
+    if not os.path.exists(filepath):
+        return remedies_map
+    with open(filepath, mode='r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            remedies_map[row['Condition']] = [row['Remedy_1'], row['Remedy_2'], row['Remedy_3']]
+    return remedies_map
+
 PRODUCT_RECOMMENDATIONS = load_products_from_csv()
 SEVERITY_RULES = load_severity_from_csv()
+HOME_REMEDIES = load_remedies_from_csv()

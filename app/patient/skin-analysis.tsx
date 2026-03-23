@@ -181,21 +181,52 @@ export default function SkinAnalysisPage() {
     };
 
     const simulateAIResponse = () => {
-        const problems = ['Acne', 'Wrinkles', 'Pigmentation', 'Dark Circles'];
+        const problems = [
+            'Acne Vulgaris', 'Hormonal Acne', 'Fungal Acne', 'Cystic Acne', 'Comedones',
+            'Impetigo', 'Folliculitis', 'Fungal Infection (Tinea Faciei)', 'Herpes Simplex (Cold Sores)',
+            'Eczema (Atopic Dermatitis)', 'Seborrheic Dermatitis', 'Rosacea', 'Contact Dermatitis',
+            'Urticaria', 'Melasma', 'Vitiligo', 'Freckles', 'Lentigines', 
+            'Post-Inflammatory Hyperpigmentation (PIH)', 'Psoriasis', 'Milia',
+            'Enlarged Pores', 'Sebaceous Hyperplasia', 'Keratosis Pilaris',
+            'Skin Tags', 'Warts', 'Cellulitis', 'Basal Cell Carcinoma',
+            'Squamous Cell Carcinoma', 'Melanoma', 'Dark Circles', 'Wrinkles'
+        ];
         const condition = problems[Math.floor(Math.random() * problems.length)];
         
-        const dummyRecs = [
+        // Match some dummy products based on condition
+        let dummyRecs = [
             { tier: 'Budget', category: 'Cleanser', name: 'Face Wash', brand: 'Saeed Ghani', price: 'Rs. 450' },
             { tier: 'Mid-Range', category: 'Serum', name: 'MandelAC', brand: 'Jenpharm', price: 'Rs. 1200' }
         ];
 
+        if (condition.includes('Acne')) {
+            dummyRecs = [
+                { tier: 'Budget', category: 'Face Wash', name: 'Neem Face Wash', brand: 'Saeed Ghani', price: 'Rs. 450' },
+                { tier: 'Premium', category: 'Serum', name: 'MandelAC', brand: 'Jenpharm', price: 'Rs. 1200' }
+            ];
+        } else if (condition.includes('Melasma') || condition.includes('Pigmentation')) {
+            dummyRecs = [
+                { tier: 'Mid-Range', category: 'Serum', name: 'Vitamin C Serum', brand: 'Jenpharm', price: 'Rs. 1550' },
+                { tier: 'Mid-Range', category: 'Sunscreen', name: 'Spectra Block', brand: 'Jenpharm', price: 'Rs. 1250' }
+            ];
+        }
+
         const result = {
             Condition: condition,
-            Confidence: '89%',
+            Confidence: '92%',
             Severity: 'Moderate',
-            Advice: 'Avoid touching face, stay hydrated.',
-            Doctor: 'Not required',
-            Products: dummyRecs
+            Advice: 'Maintain consistency and follow your new routine.',
+            Doctor: [
+                'Cystic Acne', 'Psoriasis', 'Cellulitis', 
+                'Basal Cell Carcinoma', 'Squamous Cell Carcinoma', 'Melanoma'
+            ].includes(condition) ? 'Recommended' : 'Not required',
+            Products: dummyRecs,
+            // These will fallback to hardcoded lists in the results page if not provided,
+            // but we'll provide some generic ones here to show it works
+            dos: ['Keep skin clean', 'Use sunscreen daily', 'Stay hydrated'],
+            donts: ['Don\'t pop or pick', 'Avoid harsh scrubs', 'Don\'t skip SPF'],
+            morning_routine: ['1. Gentle Cleanser', '2. Serum', '3. Moisturizer', '4. Sunscreen'],
+            night_routine: ['1. Cleanser', '2. Targeted Treatment', '3. Reparative Moisturizer']
         };
 
         processAIResult(result);
@@ -218,7 +249,11 @@ export default function SkinAnalysisPage() {
                 darkCircles: aiResult.Condition === 'Dark Circles' ? 85 : 5,
                 sensitivity: aiResult.Condition === 'Eczema' ? 75 : 10
             },
-            recommendations: aiResult.Products || aiResult.recommendations || []
+            recommendations: aiResult.Products || aiResult.recommendations || [],
+            dos: aiResult.dos || [],
+            donts: aiResult.donts || [],
+            morningRoutine: aiResult.morning_routine || [],
+            nightRoutine: aiResult.night_routine || []
         };
 
         router.push({

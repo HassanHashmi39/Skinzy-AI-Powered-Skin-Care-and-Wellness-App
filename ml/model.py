@@ -9,7 +9,7 @@ try:
 except ImportError:
     has_tf = False
 
-from config import DISEASES, PRODUCT_RECOMMENDATIONS, SEVERITY_RULES
+from config import DISEASES, PRODUCT_RECOMMENDATIONS, SEVERITY_RULES, HOME_REMEDIES
 
 class SkinAnalysisModel:
     def __init__(self, model_path="model/skinzy_model.h5"):
@@ -28,7 +28,7 @@ class SkinAnalysisModel:
         """
         if self.model and os.path.exists(img_path) and has_tf:
             # Real prediction using MobileNetV2
-            img = image.load_img(img_path, target_size=(224, 224))
+            img = image.load_img(img_path, target_size=(160, 160))
             img_array = image.img_to_array(img)
             img_array = tf.expand_dims(img_array, 0)
             img_array = preprocess_input(img_array)
@@ -77,12 +77,19 @@ class SkinAnalysisModel:
         all_severities = []
         all_advice = []
         all_products = []
+        all_dos = []
+        all_donts = []
+        all_morning = []
+        all_night = []
         doctor_required = "Not required"
         
         for p_class in predicted_classes:
-            sub_issue = "None"
-            if p_class == 'Acne':
-                sub_issue = random.choice(["Heavy Inflammation", "Redness", "None"])
+            # Dynamically pick a sub-issue if it's available in SEVERITY_RULES
+            available_sub_issues = [
+                k.split('_')[1] for k in SEVERITY_RULES.keys() 
+                if k.startswith(f"{p_class}_") and k.split('_')[1] != "None"
+            ]
+            sub_issue = random.choice(available_sub_issues) if available_sub_issues else "None"
             
             rule_key = f"{p_class}_{sub_issue}"
             severity = "Moderate"
@@ -92,12 +99,20 @@ class SkinAnalysisModel:
                 rule = SEVERITY_RULES[rule_key]
                 severity = rule['Severity']
                 all_advice.append(rule['Advice'])
+                all_dos.append(rule.get('Dos', ''))
+                all_donts.append(rule.get('Donts', ''))
+                all_morning.append(rule.get('Morning_Routine', ''))
+                all_night.append(rule.get('Night_Routine', ''))
                 if rule['Doctor_Required'] == 'Recommended':
                     doctor_required = 'Recommended'
             elif f"{p_class}_None" in SEVERITY_RULES: # Fallback
                 rule = SEVERITY_RULES[f"{p_class}_None"]
                 severity = rule['Severity']
                 all_advice.append(rule['Advice'])
+                all_dos.append(rule.get('Dos', ''))
+                all_donts.append(rule.get('Donts', ''))
+                all_morning.append(rule.get('Morning_Routine', ''))
+                all_night.append(rule.get('Night_Routine', ''))
                 if rule['Doctor_Required'] == 'Recommended':
                     doctor_required = 'Recommended'
             
@@ -116,6 +131,18 @@ class SkinAnalysisModel:
             overall_severity = "Moderate"
         else:
             overall_severity = "Mild"
+            
+        # Deduplicate and format list strings
+        def extract_list(raw_list):
+            items = []
+            for s in raw_list:
+                items.extend([i.strip() for i in s.split(';') if i.strip()])
+            return list(set(items))
+
+        dos_list = extract_list(all_dos)
+        donts_list = extract_list(all_donts)
+        morning_routine = extract_list(all_morning)
+        night_routine = extract_list(all_night)
             
         # Deduplicate products by name so we don't recommend the exact same face wash twice
         unique_products = []
@@ -154,12 +181,26 @@ class SkinAnalysisModel:
             # Fallback if filters accidentally stripped everything
             filtered_products = unique_products[:2]
 
-        """
-        🧩 Step 8: Final Output System (Multi-Label)
-        """
+        # 🧩 Step 8: Industrial Safety Protocol
+        # If max confidence is low, flag for human verification
+        is_uncertain = True
+        if detected_conditions and detected_conditions[0]['confidence'] > 35.0:
+            is_uncertain = False
+
         primary_confidence = f"{detected_conditions[0]['confidence']:.1f}%"
         condition_string = " & ".join(predicted_classes)
         advice_string = " ".join(list(set(all_advice)))
+
+        if is_uncertain:
+            advice_string = "🚨 LOW CONFIDENCE: AI is uncertain. This analysis is for educational purposes only. " + advice_string
+            doctor_required = 'Recommended' # Force doctor recommendation if uncertain
+
+        # 🧩 Remedies Collection
+        remedies_list = []
+        for p_class in predicted_classes:
+            if p_class in HOME_REMEDIES:
+                remedies_list.extend(HOME_REMEDIES[p_class])
+        remedies_list = list(set(remedies_list))
 
         result = {
             'Condition': condition_string,
@@ -167,12 +208,18 @@ class SkinAnalysisModel:
             'Severity': overall_severity,
             'Products': filtered_products,
             'Advice': advice_string,
-            'Doctor': doctor_required,
+            'doctor': doctor_required,
+            'dos': dos_list,
+            'donts': donts_list,
+            'morning_routine': morning_routine,
+            'night_routine': night_routine,
             
             'disease': condition_string,
             'condition_level': overall_severity.lower(),
             'recommendations': filtered_products,
-            'diseases': predicted_classes
+            'diseases': predicted_classes,
+            'is_uncertain': is_uncertain,
+            'remedies': remedies_list
         }
         
         return result

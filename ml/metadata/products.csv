@@ -1,17 +1,72 @@
 Condition,Category,Name,Brand,Price,Tier
-Acne,Face Wash,Saeed Ghani Face Wash,Saeed Ghani,Rs. 450,Budget
-Acne,Serum,MandelAC Serum,Jenpharm,Rs. 1200,Mid-Range
-Acne,Cleanser,Neutrogena Acne Wash,Neutrogena,Rs. 3500,Premium
-Wrinkles,Face Wash,Gentle Cleanser,Cerave,Rs. 2000,Mid-Range
-Wrinkles,Serum,Retinol Serum,The Ordinary,Rs. 3500,Premium
-Pigmentation,Face Wash,Vitamin C Cleanser,Vince,Rs. 850,Budget
-Pigmentation,Serum,Vitamin C Serum,Jenpharm,Rs. 1450,Mid-Range
-Dark Circles,Under Eye Cream,Revitalize Eye Cream,Jenpharm,Rs. 1250,Mid-Range
-Dark Circles,Serum,Caffeine Solution,The Ordinary,Rs. 2100,Premium
-Normal,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1150,Mid-Range
-Rosacea,Cleanser,Cetaphil Gentle Cleanser,Cetaphil,Rs. 1800,Mid-Range
-Rosacea,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1100,Mid-Range
+Acne Vulgaris,Face Wash,Saeed Ghani Neem Face Wash,Saeed Ghani,Rs. 450,Budget
+Acne Vulgaris,Face Wash,Derma Shine Acne Wash,Derma Shine,Rs. 650,Budget
+Acne Vulgaris,Serum,MandelAC Serum,Jenpharm,Rs. 1200,Mid-Range
+Acne Vulgaris,Serum,Niacinamide Serum,Vince,Rs. 1450,Mid-Range
+Acne Vulgaris,Cleanser,Neutrogena Acne Wash,Neutrogena,Rs. 3500,Premium
+Hormonal Acne,Serum,MandelAC Serum,Jenpharm,Rs. 1200,Mid-Range
+Hormonal Acne,Face Wash,Vince Mild Wash,Vince,Rs. 850,Budget
+Hormonal Acne,Treatment,Azelaic Acid 10%,The Ordinary,Rs. 2800,Premium
+Fungal Acne,Treatment,Nizoral Cream,Janssen,Rs. 850,Mid-Range
+Fungal Acne,Face Wash,Nizoral Shampoo (as wash),Janssen,Rs. 1650,Mid-Range
+Fungal Acne,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1150,Mid-Range
+Cystic Acne,Treatment,Benzac AC 5% Gel,Galderma,Rs. 1850,Mid-Range
+Cystic Acne,Treatment,DermaV AC Gel,Jenpharm,Rs. 1100,Mid-Range
+Cystic Acne,Cleanser,CeraVe Acne Control,CeraVe,Rs. 4200,Premium
+Comedones,Exfoliant,Salicylic Acid 2%,The Ordinary,Rs. 2800,Premium
+Comedones,Exfoliant,BHA Exfoliating Toner,Primary,Rs. 1850,Mid-Range
+Impetigo,Antiseptic,Betadine Solution,Mundipharma,Rs. 350,Budget
+Impetigo,Antiseptic,Pyodine,Generic,Rs. 200,Budget
+Folliculitis,Face Wash,Hibiscrub Wash,Mölnlycke,Rs. 950,Mid-Range
+Folliculitis,Treatment,Benzoyl Peroxide 5%,Benzac,Rs. 1200,Mid-Range
+Fungal Infection (Tinea Faciei),Antifungal,Canesten Cream,Bayer,Rs. 480,Budget
+Fungal Infection (Tinea Faciei),Face Wash,Nizoral Shampoo (as wash),Janssen,Rs. 1650,Mid-Range
+Herpes Simplex (Cold Sores),Lip Balm,Zovirax Cream,GSK,Rs. 950,Mid-Range
+Eczema (Atopic Dermatitis),Moisturizer,Physiogel Hypoallergenic,Physiogel,Rs. 3200,Premium
+Eczema (Atopic Dermatitis),Cleanser,Cetaphil Gentle Cleanser,Cetaphil,Rs. 2200,Premium
+Seborrheic Dermatitis,Treatment,Ketoconazole Shampoo,Nizoral,Rs. 1750,Mid-Range
+Rosacea,Cleanser,Derma Shine Soft Cleanser,Derma Shine,Rs. 850,Budget
+Rosacea,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1150,Mid-Range
+Rosacea,Serum,Vitamin B3 Niacinamide,Organic Traveller,Rs. 1850,Mid-Range
+Contact Dermatitis,Moisturizer,Physiogel Calming Relief,Physiogel,Rs. 3500,Premium
+Contact Dermatitis,Cleanser,Derma Shine Mild,Derma Shine,Rs. 750,Budget
+Urticaria,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1150,Mid-Range
+Urticaria,Soothing,Calamine Lotion,Generic,Rs. 250,Budget
+Melasma,Serum,Vitamin C Serum,Jenpharm,Rs. 1550,Mid-Range
+Melasma,Serum,Quench Vitamin C,Organic Traveller,Rs. 2100,Premium
+Melasma,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1250,Mid-Range
+Vitiligo,Sunscreen,Sunstop SPF 100,Jenpharm,Rs. 1750,Mid-Range
+Vitiligo,Moisturizer,Eucerin Daily Protection,Eucerin,Rs. 3500,Premium
+Freckles,Face Wash,Vince Whitening Wash,Vince,Rs. 850,Budget
+Freckles,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1250,Mid-Range
+Lentigines,Serum,Alpha Arbutin 2%,The Ordinary,Rs. 2800,Premium
+Lentigines,Serum,Vitamin C,Jenpharm,Rs. 1550,Mid-Range
+Post-Inflammatory Hyperpigmentation (PIH),Serum,Alpha Arbutin,Organic Traveller,Rs. 1950,Mid-Range
+Psoriasis,Moisturizer,CeraVe Psoriasis Cream,CeraVe,Rs. 4500,Premium
+Psoriasis,Moisturizer,Dermive Urea,Jenpharm,Rs. 1450,Mid-Range
 Milia,Exfoliant,Salicylic Acid 2%,The Ordinary,Rs. 2400,Premium
-Milia,Face Wash,Saeed Ghani Neem Wash,Saeed Ghani,Rs. 450,Budget
-Dermatitis Perioral,Cleanser,Cerave Hydrating Cleanser,Cerave,Rs. 2500,Premium
-Dermatitis Perioral,Repair Cream,Physiogel Calming Relief,Physiogel,Rs. 3000,Premium
+Enlarged Pores,Serum,Niacinamide 10%,The Ordinary,Rs. 2400,Premium
+Enlarged Pores,Serum,Pore Tightening,Organic Traveller,Rs. 1850,Mid-Range
+Sebaceous Hyperplasia,Serum,Retinol 0.5%,The Ordinary,Rs. 3200,Premium
+Keratosis Pilaris,Moisturizer,Dermive Urea 10%,Jenpharm,Rs. 1450,Mid-Range
+Keratosis Pilaris,Moisturizer,CeraVe SA Cream,CeraVe,Rs. 4800,Premium
+Skin Tags,Consultation,Specialist Visit Required,N/A,Rs. 0,Budget
+Warts,Treatment,Duofilm solution,GSK,Rs. 1650,Mid-Range
+Cellulitis,Specialist,IMMEDIATE DOCTOR VISIT,Hospital,N/A,Premium
+Basal Cell Carcinoma,Specialist,URGENT DERMATOLOGIST VISIT,Oncology,N/A,Premium
+Squamous Cell Carcinoma,Specialist,URGENT DERMATOLOGIST VISIT,Oncology,N/A,Premium
+Melanoma,Specialist,URGENT CANCER SPECIALIST,Oncology,N/A,Premium
+Normal,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1250,Mid-Range
+Dark Circles,Under Eye Cream,Revitalize Eye Cream,Jenpharm,Rs. 1350,Mid-Range
+Wrinkles,Serum,Youth Serum (Retinol),Organic Traveller,Rs. 2450,Premium
+Wrinkles,Serum,Retinol Serum,The Ordinary,Rs. 3800,Premium
+Actinic Keratosis,Sunscreen,Spectra Block SPF 60,Jenpharm,Rs. 1250,Mid-Range
+Actinic Keratosis,Specialist,Consult Dermatologist,N/A,Rs. 0,Budget
+Bullous Disease,Specialist,Doctor Visit,Hospital,Rs. 1000,Mid-Range
+Exanthems and Drug Eruptions,Lotion,Calamine Lotion,Generic,Rs. 250,Budget
+Lupus,Sunscreen,Mineral Sunscreen SPF 50,Generic,Rs. 2500,Mid-Range
+Seborrheic Keratosis,Moisturizer,Dermive Urea,Jenpharm,Rs. 1450,Mid-Range
+Vascular Tumors,Specialist,Vascular Specialist,N/A,Rs. 2000,Mid-Range
+Vasculitis,Specialist,Internist,N/A,Rs. 2000,Mid-Range
+Perioral Dermatitis,Moisturizer,Dermive Oil Free,Jenpharm,Rs. 1150,Mid-Range
+Systemic Disease,Specialist,Internal Medicine Specialist,Hospital,Rs. 2000,Mid-Range

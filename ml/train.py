@@ -71,7 +71,7 @@ def train_skin_model():
 
     # 4. Train Model
     print("4 -> Training Model...")
-    model.fit(train, validation_data=val, epochs=10)
+    model.fit(train, validation_data=val, epochs=2)
 
     # 5. Save Model
     print("5 -> Saving Model...")
