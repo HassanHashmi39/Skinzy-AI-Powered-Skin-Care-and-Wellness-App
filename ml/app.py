@@ -6,7 +6,7 @@ from flask_cors import CORS
 from model import SkinAnalysisModel
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize the model
 analyzer = SkinAnalysisModel()
@@ -27,13 +27,14 @@ def analyze_skin():
         except:
             pass
 
-    # Save image temporarily or process in-memory
-    img_path = "temp_analysis.jpg"
+    # Save image using absolute path so it works regardless of working directory
+    img_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "temp_analysis.jpg")
     img.save(img_path)
     
     # Run AI Analysis safely passing medical profile
     try:
         results = analyzer.predict(img_path, medical_data)
+        print(f"Prediction results: {results['Condition']} (Confidence: {results['Confidence']})")
         # os.remove(img_path) # Clean up
         return jsonify(results)
     except Exception as e:
@@ -45,5 +46,5 @@ def health():
 
 if __name__ == '__main__':
     # Default port for ML server
-    port = int(os.environ.get('PORT', 5005))
+    port = int(os.environ.get('PORT', 8080))
     app.run(host='0.0.0.0', port=port, debug=False)

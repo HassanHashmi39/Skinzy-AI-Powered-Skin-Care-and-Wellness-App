@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { Camera, ChevronLeft, Image as ImageIcon, Info, Sparkles, X } from 'lucide-react-native';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Animated, Dimensions, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, Animated, Dimensions, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +9,29 @@ const { width } = Dimensions.get('window');
 
 export default function SkinAnalysisPage() {
     const router = useRouter();
+    
+    useEffect(() => {
+        // Pre-check AI Server connection on load
+        const checkServer = async () => {
+            const urls = [
+                `http://${Platform.OS === 'web' ? window.location.hostname : '127.0.0.1'}:8080/health`,
+                'http://127.0.0.1:8080/health',
+                'http://192.168.1.15:8080/health',
+                'http://localhost:8080/health'
+            ];
+            for (const url of urls) {
+                try {
+                    const r = await fetch(url);
+                    if (r.ok) {
+                        console.log("✅ Proactive check: AI Server found at", url);
+                        break;
+                    }
+                } catch(e) {}
+            }
+        };
+        checkServer();
+    }, []);
+
     const [image, setImage] = useState<string | null>(null);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisProgress, setAnalysisProgress] = useState(0);
@@ -98,7 +121,11 @@ export default function SkinAnalysisPage() {
         if (!image) return;
 
         // In a real app, you would use your AI server URL
-        const AI_SERVER_URL = process.env.EXPO_PUBLIC_AI_SERVER_URL || 'http://10.175.179.82:5005/analyze'; 
+        // Updated to your current IP address (10.9.213.216)
+        const AI_SERVER_URL = process.env.EXPO_PUBLIC_AI_SERVER_URL || 
+            (Platform.OS === 'web' 
+                ? `http://${window.location.hostname}:8080/analyze` 
+                : 'http://192.168.1.15:8080/analyze'); 
 
         try {
             // Simulated delay for progress bar effect
@@ -106,11 +133,29 @@ export default function SkinAnalysisPage() {
 
             // Create form data for image upload
             const formData = new FormData();
-            formData.append('image', {
-                uri: image,
-                type: 'image/jpeg',
-                name: 'skin_image.jpg',
-            } as any);
+            
+            if (Platform.OS === 'web') {
+                try {
+                    // For web, we need to convert the URI to a blob
+                    console.log("Converting image to blob:", image.substring(0, 50) + "...");
+                    const response = await fetch(image);
+                    const blob = await response.blob();
+                    formData.append('image', blob, 'skin_image.jpg');
+                    console.log("Image successfully converted to blob");
+                } catch (blobErr) {
+                    console.error("Failed to convert image to blob:", blobErr);
+                    setIsAnalyzing(false);
+                    Alert.alert('Image Error', 'Failed to process the selected image for upload.');
+                    return;
+                }
+            } else {
+                // For mobile (React Native)
+                formData.append('image', {
+                    uri: image,
+                    type: 'image/jpeg',
+                    name: 'skin_image.jpg',
+                } as any);
+            }
 
             // 🧩 Securely retrieve the patient's customized medical profile to feed AI 
             try {
@@ -122,28 +167,70 @@ export default function SkinAnalysisPage() {
                 console.log('Failed to attach medical profile.');
             }
 
-            // Attempt to call the Python AI Server
-            // We use a timeout to fallback to mock if the server isn't running
-            const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 5000);
+            // Attempt to call the Python AI Server with multiple fallback URLs
+            const tryFetch = async (url: string) => {
+                console.log("Attempting to reach AI Server at:", url);
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 15000); 
+
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        body: formData,
+                        signal: controller.signal
+                    });
+                    clearTimeout(timeoutId);
+                    return response;
+                } catch (e) {
+                    clearTimeout(timeoutId);
+                    throw e;
+                }
+            };
 
             try {
-                const response = await fetch(AI_SERVER_URL, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
+                let response;
+                const urlsToTry = [
+                    AI_SERVER_URL,
+                    `http://${Platform.OS === 'web' ? window.location.hostname : '127.0.0.1'}:8080/analyze`,
+                    'http://127.0.0.1:8080/analyze',
+                    'http://192.168.1.15:8080/analyze',
+                    'http://localhost:8080/analyze'
+                ];
+
+                // Remove duplicates and invalid URLs
+                const uniqueUrls = Array.from(new Set(urlsToTry.filter(url => url && url.startsWith('http'))));
+
+                console.log("Will attempt these URLs:", uniqueUrls);
+
+                let lastErr;
+                for (const url of uniqueUrls) {
+                    try {
+                        response = await tryFetch(url);
+                        if (response) break;
+                    } catch (err) {
+                        console.log(`Failed to reach ${url}, trying next...`);
+                        lastErr = err;
+                    }
+                }
+
+                if (!response) {
+                    throw lastErr || new Error("All connection attempts failed");
+                }
 
                 const aiResult = await response.json();
+                
+                if (aiResult.error) {
+                    console.log("AI Server returned an error:", aiResult.error);
+                    setIsAnalyzing(false);
+                    Alert.alert('Analysis Failed', aiResult.error);
+                    return;
+                }
+                
                 processAIResult(aiResult);
             } catch (err) {
-                console.log("AI Server not reached, using local simulation logic...");
-                // Fallback simulation that follows the same logic as the Python model
-                simulateAIResponse();
+                console.log("AI Server not reached on any URL:", err);
+                setIsAnalyzing(false);
+                Alert.alert('Server Error', `AI server at ${AI_SERVER_URL} is not responding. Please check if the Python backend is running.`);
             }
 
         } catch (error) {
@@ -181,55 +268,9 @@ export default function SkinAnalysisPage() {
     };
 
     const simulateAIResponse = () => {
-        const problems = [
-            'Acne Vulgaris', 'Hormonal Acne', 'Fungal Acne', 'Cystic Acne', 'Comedones',
-            'Impetigo', 'Folliculitis', 'Fungal Infection (Tinea Faciei)', 'Herpes Simplex (Cold Sores)',
-            'Eczema (Atopic Dermatitis)', 'Seborrheic Dermatitis', 'Rosacea', 'Contact Dermatitis',
-            'Urticaria', 'Melasma', 'Vitiligo', 'Freckles', 'Lentigines', 
-            'Post-Inflammatory Hyperpigmentation (PIH)', 'Psoriasis', 'Milia',
-            'Enlarged Pores', 'Sebaceous Hyperplasia', 'Keratosis Pilaris',
-            'Skin Tags', 'Warts', 'Cellulitis', 'Basal Cell Carcinoma',
-            'Squamous Cell Carcinoma', 'Melanoma', 'Dark Circles', 'Wrinkles'
-        ];
-        const condition = problems[Math.floor(Math.random() * problems.length)];
-        
-        // Match some dummy products based on condition
-        let dummyRecs = [
-            { tier: 'Budget', category: 'Cleanser', name: 'Face Wash', brand: 'Saeed Ghani', price: 'Rs. 450' },
-            { tier: 'Mid-Range', category: 'Serum', name: 'MandelAC', brand: 'Jenpharm', price: 'Rs. 1200' }
-        ];
-
-        if (condition.includes('Acne')) {
-            dummyRecs = [
-                { tier: 'Budget', category: 'Face Wash', name: 'Neem Face Wash', brand: 'Saeed Ghani', price: 'Rs. 450' },
-                { tier: 'Premium', category: 'Serum', name: 'MandelAC', brand: 'Jenpharm', price: 'Rs. 1200' }
-            ];
-        } else if (condition.includes('Melasma') || condition.includes('Pigmentation')) {
-            dummyRecs = [
-                { tier: 'Mid-Range', category: 'Serum', name: 'Vitamin C Serum', brand: 'Jenpharm', price: 'Rs. 1550' },
-                { tier: 'Mid-Range', category: 'Sunscreen', name: 'Spectra Block', brand: 'Jenpharm', price: 'Rs. 1250' }
-            ];
-        }
-
-        const result = {
-            Condition: condition,
-            Confidence: '92%',
-            Severity: 'Moderate',
-            Advice: 'Maintain consistency and follow your new routine.',
-            Doctor: [
-                'Cystic Acne', 'Psoriasis', 'Cellulitis', 
-                'Basal Cell Carcinoma', 'Squamous Cell Carcinoma', 'Melanoma'
-            ].includes(condition) ? 'Recommended' : 'Not required',
-            Products: dummyRecs,
-            // These will fallback to hardcoded lists in the results page if not provided,
-            // but we'll provide some generic ones here to show it works
-            dos: ['Keep skin clean', 'Use sunscreen daily', 'Stay hydrated'],
-            donts: ['Don\'t pop or pick', 'Avoid harsh scrubs', 'Don\'t skip SPF'],
-            morning_routine: ['1. Gentle Cleanser', '2. Serum', '3. Moisturizer', '4. Sunscreen'],
-            night_routine: ['1. Cleanser', '2. Targeted Treatment', '3. Reparative Moisturizer']
-        };
-
-        processAIResult(result);
+        // Removed the random mock fallback. The AI analysis must only come from the real server.
+        setIsAnalyzing(false);
+        Alert.alert('Analysis Unavailable', 'The AI model server is not reachable.');
     };
 
     const navigateToResults = (aiResult: any) => {

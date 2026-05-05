@@ -1,10 +1,9 @@
 # model.py
-import random
 import os
+
 try:
     import tensorflow as tf
     from tensorflow.keras.preprocessing import image
-    from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
     has_tf = True
 except ImportError:
     has_tf = False
@@ -12,14 +11,20 @@ except ImportError:
 from config import DISEASES, PRODUCT_RECOMMENDATIONS, SEVERITY_RULES, HOME_REMEDIES
 
 class SkinAnalysisModel:
-    def __init__(self, model_path="model/skinzy_model.h5"):
+    def __init__(self, model_path=None):
         self.diseases = DISEASES
         self.model = None
+        # Always resolve model path relative to this file, not the working directory
+        if model_path is None:
+            model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model", "skinzy_model.h5")
         if os.path.exists(model_path) and has_tf:
+            print(f"✅ Loading model from: {model_path}")
             self.model = tf.keras.models.load_model(model_path)
+        else:
+            print(f"❌ Model NOT found at: {model_path} | has_tf={has_tf}")
             
     def predict(self, img_path, medical_data=None):
-        if medical_data is None:
+        if medical_data is None or not isinstance(medical_data, dict):
             medical_data = {}
             
         """
@@ -27,48 +32,58 @@ class SkinAnalysisModel:
         Image -> Model -> Classes -> Aggregated Result
         """
         if self.model and os.path.exists(img_path) and has_tf:
-            # Real prediction using MobileNetV2
+            # ✅ Real deterministic prediction using the trained model
             img = image.load_img(img_path, target_size=(160, 160))
             img_array = image.img_to_array(img)
             img_array = tf.expand_dims(img_array, 0)
-            img_array = preprocess_input(img_array)
-            predictions = self.model.predict(img_array)[0]
-            
-            detected_conditions = []
+            img_array = img_array / 255.0 # Match training rescale=1./255
+            predictions = self.model.predict(img_array, verbose=0)[0]
+
+            # --- Build full ranked list of all classes ---
+            all_conditions = []
             for i, prob in enumerate(predictions):
-                confidence = float(prob) * 100
-                # If confidence is > 15%, we flag it as an active condition 
-                # (Softmax spreads probabilities, so 15% out of 8 classes is significant)
-                if confidence >= 15.0:
-                    detected_conditions.append({
-                        'disease': self.diseases[i],
-                        'confidence': confidence
-                    })
-            
-            # Sort by highest confidence first
-            detected_conditions.sort(key=lambda x: x['confidence'], reverse=True)
-            
-            # Fallback if none cross the threshold (highly unlikely)
-            if not detected_conditions:
-                max_index = tf.math.argmax(predictions).numpy()
-                detected_conditions = [{'disease': self.diseases[max_index], 'confidence': float(predictions[max_index]) * 100}]
-            
-            predicted_classes = [d['disease'] for d in detected_conditions]
-        
-        else: 
-            # Mocking the AI model for multiple conditions (Acne + Dark Circles)
-            # We simulate 1 or 2 concurrent issues
-            num_issues = random.randint(1, 2)
-            # Remove 'Normal' if we are picking issues
-            issue_pool = [d for d in self.diseases if d != 'Normal']
-            predicted_classes = random.sample(issue_pool, num_issues)
-            
-            detected_conditions = []
-            for cls in predicted_classes:
-                detected_conditions.append({
-                    'disease': cls,
-                    'confidence': round(random.uniform(80.0, 98.0))
+                all_conditions.append({
+                    'disease': self.diseases[i],
+                    'confidence': float(prob) * 100
                 })
+            all_conditions.sort(key=lambda x: x['confidence'], reverse=True)
+
+            # --- Primary condition: always the highest confidence class ---
+            primary = all_conditions[0]
+            detected_conditions = [primary]
+
+            # --- Include a second condition ONLY if it is strongly present ---
+            # Rule: 2nd class must have >= 20% confidence AND be >= 60% of top confidence
+            if len(all_conditions) > 1:
+                second = all_conditions[1]
+                if (second['confidence'] >= 20.0 and
+                        second['confidence'] >= 0.6 * primary['confidence'] and
+                        second['disease'] != 'Normal'):
+                    detected_conditions.append(second)
+
+            predicted_classes = [d['disease'] for d in detected_conditions]
+
+        else:
+            # ❌ Model unavailable — return a clear error, never random results
+            return {
+                'error': 'AI model is not available. Please ensure the model file exists and TensorFlow is installed.',
+                'Condition': 'Model Unavailable',
+                'Confidence': '0.0%',
+                'Severity': 'Unknown',
+                'Products': [],
+                'Advice': 'The AI model could not be loaded. Please contact support.',
+                'doctor': 'Recommended',
+                'dos': [],
+                'donts': [],
+                'morning_routine': [],
+                'night_routine': [],
+                'disease': 'Model Unavailable',
+                'condition_level': 'unknown',
+                'recommendations': [],
+                'diseases': [],
+                'is_uncertain': True,
+                'remedies': []
+            }
 
         """
         🧩 Step 7: Severity + Recommendation (Logic Part)
@@ -85,11 +100,12 @@ class SkinAnalysisModel:
         
         for p_class in predicted_classes:
             # Dynamically pick a sub-issue if it's available in SEVERITY_RULES
+            # ✅ Deterministic: always use the first available sub-issue, never random
             available_sub_issues = [
-                k.split('_')[1] for k in SEVERITY_RULES.keys() 
+                k.split('_')[1] for k in sorted(SEVERITY_RULES.keys())
                 if k.startswith(f"{p_class}_") and k.split('_')[1] != "None"
             ]
-            sub_issue = random.choice(available_sub_issues) if available_sub_issues else "None"
+            sub_issue = available_sub_issues[0] if available_sub_issues else "None"
             
             rule_key = f"{p_class}_{sub_issue}"
             severity = "Moderate"

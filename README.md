@@ -67,7 +67,6 @@ npm install
 # Create a .env file (refer to backend/README.md)
 npm run dev
 ```
-
 ### 4. AI Server Setup
 ```bash
 cd ml
@@ -86,4 +85,22 @@ npm start
 
 ---
 
+## 🧪 Training the AI Model
+If you're interested in refining the model:
+1. Ensure your dataset is in the `ml/dataset` directory.
+2. Run `python ml/train_pro.py` for an optimized training pipeline.
+
+---
+
+## 🌐 Deployment Recommendation
+For a free, full-stack deployment:
+- **Frontend**: [Netlify](https://www.netlify.com/)
+- **Backend**: [Render](https://render.com/) or [Koyeb](https://www.koyeb.com/)
+- **Database**: [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+- **AI Server**: [Hugging Face Spaces](https://huggingface.co/spaces) (Docker/Flask CPU)
+
+---
+
+## 👨‍💻 Contributors
+Developed with ❤️ by the Skinzy Team.
 
