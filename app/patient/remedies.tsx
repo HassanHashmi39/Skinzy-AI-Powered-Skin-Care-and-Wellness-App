@@ -192,7 +192,7 @@ function Remedies({ onNavigate }: RemediesProps) {
         </View>
 
         {/* Quick Tips */}
-        <View className="bg-green-500 rounded-2xl p-6 mb-8">
+        <View className="bg-purple-600 rounded-2xl p-6 mb-8 shadow-lg shadow-purple-100">
           <Text className="text-lg font-bold mb-4 text-white">💡 Important Tips</Text>
           <View className="flex-col md:flex-row gap-4">
             <View className="bg-white/20 rounded-lg p-4 flex-1">

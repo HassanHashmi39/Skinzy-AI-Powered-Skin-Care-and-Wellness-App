@@ -1,4 +1,5 @@
 import { ActivityIndicator, Alert, Image, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Footer from '../../components/Footer';
 import { Stack, useRouter } from 'expo-router';
 import { Bell, Calendar, Clock, MessageCircle, Settings, Trash2, TrendingUp, User } from 'lucide-react-native';
 import React, { useState, useCallback } from 'react';
@@ -199,7 +200,7 @@ function DoctorDashboard() {
   if (activeTab === 'settings') return <DoctorSettings doctorInfo={doctorInfo} onBack={() => setActiveTab('overview')} onLogout={handleLogout} />;
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50">
+    <View className="flex-1 bg-gray-50">
       <ScrollView className="flex-1 p-4" showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View className="bg-white rounded-3xl p-6 mb-6 shadow-sm">
@@ -383,15 +384,16 @@ function DoctorDashboard() {
         )}
 
         {/* Padding for bottom */}
-        <View className="h-20" />
+        <View className="h-10" />
+        <Footer />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
 function StatCard({ icon, label, value, bgColor }: { icon: React.ReactNode; label: string; value: string; bgColor: string }) {
   return (
-    <View className={`${bgColor} rounded-xl p-3 flex-1 min-w-[30%]`}>
+    <View className={`${bgColor} rounded-xl p-3 flex-1 min-w-[30%] max-w-[150px] mb-2`}>
       <View className="flex-row items-center gap-2 mb-1">
         {icon}
       </View>
@@ -450,16 +452,16 @@ function AppointmentCard({
         {appointment.status === 'pending' && (
           <TouchableOpacity
             onPress={() => onAccept(appointment._id)}
-            className="flex-1 bg-green-500 py-2 rounded-lg items-center"
+            className="flex-1 bg-purple-600 py-2 rounded-lg items-center shadow-sm shadow-purple-100"
           >
             <Text className="text-white font-medium text-xs">Accept</Text>
           </TouchableOpacity>
         )}
         <TouchableOpacity
           onPress={() => onViewDetails(appointment._id)}
-          className="flex-1 bg-blue-500 py-2 rounded-lg items-center"
+          className="flex-1 bg-white border border-purple-600 py-2 rounded-lg items-center"
         >
-          <Text className="text-white font-medium text-xs">Details</Text>
+          <Text className="text-purple-600 font-medium text-xs">Details</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => onDelete(appointment._id)}

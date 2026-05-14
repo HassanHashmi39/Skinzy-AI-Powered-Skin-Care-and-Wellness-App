@@ -180,7 +180,7 @@ function DoctorRegistration({ onNavigate, onRegistrationComplete }: DoctorRegist
               </View>
               <View className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                 <View
-                  className="bg-purple-500 h-2 rounded-full"
+                  className="bg-purple-600 h-2 rounded-full"
                   style={{ width: `${(step / 3) * 100}%` }}
                 />
               </View>
@@ -447,7 +447,7 @@ function DoctorRegistration({ onNavigate, onRegistrationComplete }: DoctorRegist
               <TouchableOpacity
                 onPress={handleNext}
                 disabled={isLoading}
-                className={`flex-1 px-6 py-4 rounded-full items-center ${isLoading ? 'bg-purple-300' : 'bg-purple-500'}`}
+                className={`flex-1 px-6 py-4 rounded-full items-center shadow-lg ${isLoading ? 'bg-purple-300' : 'bg-purple-600 shadow-purple-100'}`}
               >
                 {isLoading ? (
                   <ActivityIndicator color="white" />

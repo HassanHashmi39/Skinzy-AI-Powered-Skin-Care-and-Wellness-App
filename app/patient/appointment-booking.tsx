@@ -140,8 +140,8 @@ function AppointmentBooking({ onNavigate }: AppointmentBookingProps) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-50 p-4">
         <View className="w-full max-w-md bg-white rounded-3xl shadow-sm p-8 items-center">
-          <View className="w-20 h-20 bg-green-100 rounded-full items-center justify-center mb-6">
-            <Check size={40} color="#16a34a" />
+          <View className="w-20 h-20 bg-purple-100 rounded-full items-center justify-center mb-6">
+            <Check size={40} color="#9333ea" />
           </View>
           <Text className="text-2xl font-bold mb-3 text-center">Appointment Booked!</Text>
           <Text className="text-gray-600 mb-6 text-center leading-6">

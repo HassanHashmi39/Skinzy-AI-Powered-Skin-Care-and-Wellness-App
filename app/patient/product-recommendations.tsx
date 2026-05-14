@@ -279,10 +279,10 @@ function ProductRecommendations({ result, onNavigate }: ProductRecommendationsPr
             <Text className="text-gray-700">Filter by:</Text>
             <TouchableOpacity
               onPress={() => onNavigate('remedies')}
-              className="flex-row items-center gap-2 px-4 py-2 bg-green-50 rounded-full"
+              className="flex-row items-center gap-2 px-4 py-2 bg-purple-50 rounded-full"
             >
-              <Leaf size={16} color="#15803d" />
-              <Text className="text-green-700 font-medium ml-1">Try Natural Remedies</Text>
+              <Leaf size={16} color="#9333EA" />
+              <Text className="text-purple-700 font-medium ml-1">Try Natural Remedies</Text>
             </TouchableOpacity>
           </View>
           <View className="flex-row flex-wrap gap-3">

@@ -74,8 +74,8 @@ function Notifications({ onNavigate }: NotificationsProps) {
     switch (n.type) {
       case 'appointment':
         icon = <Calendar size={20} />;
-        iconColor = 'text-green-600';
-        bgColor = 'bg-green-50';
+        iconColor = 'text-purple-600';
+        bgColor = 'bg-purple-50';
         break;
       case 'message':
         icon = <MessageCircle size={20} />;

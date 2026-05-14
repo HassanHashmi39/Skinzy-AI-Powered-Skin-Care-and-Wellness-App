@@ -82,10 +82,10 @@ function UserTypeSelection({ onNavigate, onSelectUserType }: UserTypeSelectionPr
               <TouchableOpacity
                 onPress={() => onSelectUserType('doctor')}
                 activeOpacity={0.9}
-                className={`bg-white rounded-[32px] p-8 shadow-sm border-2 border-transparent active:border-blue-300 ${isDesktop ? 'flex-1' : 'w-full'}`}
+                className={`bg-white rounded-[32px] p-8 shadow-sm border-2 border-transparent active:border-purple-300 ${isDesktop ? 'flex-1' : 'w-full'}`}
               >
-                <View className="w-16 h-16 bg-blue-100 rounded-2xl items-center justify-center mb-6">
-                  <Stethoscope size={32} color="#2563eb" />
+                <View className="w-16 h-16 bg-purple-100 rounded-2xl items-center justify-center mb-6">
+                  <Stethoscope size={32} color="#9333ea" />
                 </View>
                 <Text className="text-2xl font-bold mb-3 text-gray-900">I'm a Doctor</Text>
                 <Text className="text-gray-600 mb-8 leading-6 text-base">
@@ -100,14 +100,14 @@ function UserTypeSelection({ onNavigate, onSelectUserType }: UserTypeSelectionPr
                     "Document verification system"
                   ].map((item, idx) => (
                     <View key={idx} className="flex-row items-start gap-3">
-                      <View className="w-5 h-5 bg-blue-100 rounded-full items-center justify-center mt-0.5">
-                        <Text className="text-blue-600 font-bold text-xs">✓</Text>
+                      <View className="w-5 h-5 bg-purple-100 rounded-full items-center justify-center mt-0.5">
+                        <Text className="text-purple-600 font-bold text-xs">✓</Text>
                       </View>
                       <Text className="text-gray-700 flex-1 leading-5">{item}</Text>
                     </View>
                   ))}
                 </View>
-                <View className="mt-auto px-6 py-4 bg-blue-600 rounded-2xl items-center shadow-lg shadow-blue-200">
+                <View className="mt-auto px-6 py-4 bg-purple-600 rounded-2xl items-center shadow-lg shadow-purple-200">
                   <Text className="text-white font-black text-lg">Continue as Doctor</Text>
                 </View>
               </TouchableOpacity>

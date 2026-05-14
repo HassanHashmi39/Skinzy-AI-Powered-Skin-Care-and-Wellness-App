@@ -89,7 +89,7 @@ export default function LoginPage() {
                                 onPress={() => setUserType('doctor')}
                                 className={`flex-1 py-3 rounded-xl items-center ${userType === 'doctor' ? 'bg-white shadow-sm' : ''}`}
                             >
-                                <Text className={`font-bold ${userType === 'doctor' ? 'text-blue-600' : 'text-gray-500'}`}>Doctor</Text>
+                                <Text className={`font-bold ${userType === 'doctor' ? 'text-purple-600' : 'text-gray-500'}`}>Doctor</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -135,7 +135,7 @@ export default function LoginPage() {
                             <TouchableOpacity 
                                 onPress={handleLogin}
                                 disabled={isLoading}
-                                className={`py-4 rounded-2xl items-center justify-center shadow-lg shadow-purple-200 mt-4 ${userType === 'patient' ? 'bg-purple-600' : 'bg-blue-600'}`}
+                                className={`py-4 rounded-2xl items-center justify-center shadow-lg shadow-purple-200 mt-4 bg-purple-600`}
                             >
                                 {isLoading ? (
                                     <ActivityIndicator color="white" />

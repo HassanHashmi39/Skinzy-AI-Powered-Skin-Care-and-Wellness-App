@@ -2,6 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Activity, AlertCircle, ArrowRight, Check, CheckCircle2, Coffee, Droplet, Moon, ShieldAlert, Sun, XCircle, Zap } from 'lucide-react-native';
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Footer from '../../components/Footer';
 
 export type Page = 'landing' | 'analysis' | 'results' | 'products' | 'routine' | 'appointments' | 'remedies' | 'chat' | 'history' | 'notifications' | 'profile' | 'feedback';
 
@@ -55,13 +56,13 @@ function AnalysisResults({ result, onNavigate }: AnalysisResultsProps) {
     }
   };
   const getScoreColor = (score: number) => {
-    if (score < 30) return 'text-green-600';
+    if (score < 30) return 'text-purple-600';
     if (score < 60) return 'text-yellow-600';
     return 'text-red-600';
   };
 
   const getScoreBg = (score: number) => {
-    if (score < 30) return 'bg-green-500';
+    if (score < 30) return 'bg-purple-500';
     if (score < 60) return 'bg-yellow-500';
     return 'bg-red-500';
   };
@@ -76,10 +77,10 @@ function AnalysisResults({ result, onNavigate }: AnalysisResultsProps) {
     <ScrollView className="flex-1 bg-gray-50" contentContainerStyle={{ paddingBottom: 40 }}>
       {/* Success Header */}
       <View className="bg-white m-4 rounded-3xl shadow-sm p-6 mb-6">
-        <View className="items-center mb-8">
-          <View className="w-16 h-16 bg-green-100 rounded-full items-center justify-center mb-4">
-            <Check size={32} color="#22c55e" />
-          </View>
+        <View className="items-center">
+            <View className="w-20 h-20 bg-purple-100 rounded-full items-center justify-center mb-6">
+                <Check size={40} color="#9333ea" />
+            </View>
           <Text className="text-2xl font-bold mb-2 text-gray-900 text-center">Analysis Complete!</Text>
           <Text className="text-gray-600 text-center">Here's what we found about your skin</Text>
         </View>
@@ -361,8 +362,9 @@ function AnalysisResults({ result, onNavigate }: AnalysisResultsProps) {
             <Text className="text-gray-600 text-sm">Get professional dermatologist advice</Text>
           </View>
         </TouchableOpacity>
-      </View>
-    </ScrollView>
+        </View>
+        <Footer />
+      </ScrollView>
   );
 }
 
@@ -438,11 +440,11 @@ export default function AnalysisResultsPage() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
       <AnalysisResults
         result={result}
         onNavigate={handleNavigate}
       />
-    </SafeAreaView>
+    </View>
   );
 }

@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router';
 import { Bell, Calendar, Camera, ChevronRight, MessageCircle, ShoppingBag, Sparkles, Sun, TrendingUp, Umbrella, User } from 'lucide-react-native';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Dimensions, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import Footer from '../../components/Footer';
 import * as api from '../../utils/api';
 
 const { width } = Dimensions.get('window');
@@ -98,7 +99,7 @@ export default function PatientDashboard() {
     const displayName = userData?.name?.split(' ')[0] || MOCK_USER.name;
 
     return (
-        <SafeAreaView className="flex-1 bg-gray-50">
+        <View className="flex-1 bg-gray-50">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 {/* Header */}
                 <View className="px-6 pt-4 pb-2 flex-row justify-between items-center">
@@ -200,7 +201,7 @@ export default function PatientDashboard() {
                 {/* Quick Actions Grid */}
                 <View className="px-6 mt-8">
                     <Text className="text-xl font-bold text-gray-900 mb-4">Quick Actions</Text>
-                    <View className="flex-row flex-wrap justify-between gap-y-4">
+                    <View className="flex-row flex-wrap justify-center sm:justify-start gap-4">
 
                         <ActionCard
                             title="My Routine"
@@ -361,8 +362,9 @@ export default function PatientDashboard() {
                 </View>
 
                 <View className="h-10" />
+                <Footer />
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -370,8 +372,7 @@ function ActionCard({ title, icon, bgColor, onPress }: { title: string; icon: an
     return (
         <TouchableOpacity
             onPress={onPress}
-            className={`${bgColor} rounded-3xl p-4 items-center justify-center shadow-sm`}
-            style={{ width: (width - 48 - 16) / 3 }}
+            className={`${bgColor} rounded-3xl p-4 items-center justify-center shadow-sm w-[30%] min-w-[100px] max-w-[150px] flex-grow`}
         >
             <View className="mb-2">{icon}</View>
             <Text className="text-gray-900 font-bold text-xs text-center">{title}</Text>

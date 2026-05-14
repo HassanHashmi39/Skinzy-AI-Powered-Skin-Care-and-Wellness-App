@@ -69,7 +69,7 @@ export default function UserInfoScreen() {
             });
 
             if (response && response.token) {
-                router.push("/patient/healtinfo" as any);
+                router.push("/patient/healthinfo" as any);
             } else {
                 Alert.alert("Signup Failed", response?.message || "Something went wrong. Please try again.");
             }

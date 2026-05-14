@@ -34,8 +34,8 @@ function Feedback({ onNavigate }: FeedbackProps) {
         return (
             <View className="flex-1 items-center justify-center bg-gray-50 p-6">
                 <View className="bg-white rounded-3xl p-8 w-full max-w-md items-center shadow-sm">
-                    <View className="w-20 h-20 bg-green-100 rounded-full items-center justify-center mb-6">
-                        <Send size={40} color="#16a34a" />
+                    <View className="w-20 h-20 bg-purple-100 rounded-full items-center justify-center mb-6">
+                        <Send size={40} color="#9333ea" />
                     </View>
                     <Text className="text-2xl font-bold mb-2 text-center">Thank You!</Text>
                     <Text className="text-gray-600 text-center mb-8">
