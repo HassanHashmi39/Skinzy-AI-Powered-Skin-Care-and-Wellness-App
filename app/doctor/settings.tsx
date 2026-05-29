@@ -296,8 +296,8 @@ export function DoctorSettings({ doctorInfo, onBack, onLogout }: DoctorSettingsP
         {/* Professional Information */}
         <View className="bg-white rounded-3xl p-6 mb-6 shadow-sm">
           <Text className="text-lg font-bold mb-6">Professional Information</Text>
-          <View className="bg-blue-50 p-3 rounded-lg mb-4">
-            <Text className="text-blue-800 text-sm">
+          <View className="bg-purple-50 p-3 rounded-lg mb-4 border border-purple-100">
+            <Text className="text-purple-800 text-sm">
               ℹ️ Professional information cannot be edited as it was verified during registration. Contact support if you need to update these details.
             </Text>
           </View>

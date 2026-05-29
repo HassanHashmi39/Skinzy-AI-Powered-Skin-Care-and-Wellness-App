@@ -306,7 +306,7 @@ export function DoctorChat({ onBack }: DoctorChatProps) {
           </View>
           <View>
             <Text style={{ fontWeight: 'bold', color: '#111827' }}>{selectedChatUser!.name}</Text>
-            <Text style={{ fontSize: 12, color: '#16a34a' }}>Patient</Text>
+            <Text style={{ fontSize: 12, color: '#9333ea' }}>Patient</Text>
           </View>
         </View>
         <TouchableOpacity onPress={() => setShowDeleteMenu(v => !v)} style={{ padding: 8 }}>

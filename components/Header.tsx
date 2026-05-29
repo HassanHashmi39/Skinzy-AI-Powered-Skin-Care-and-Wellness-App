@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, useWindowDimensions, Platform } from 'react-native';
 import { useRouter, usePathname } from 'expo-router';
-import { Sparkles, Menu, X, Home, Camera, User, Calendar, MessageSquare } from 'lucide-react-native';
+import { Sparkles, Menu, X, Home, Camera, User, Calendar, MessageSquare, ShoppingCart } from 'lucide-react-native';
 import { useEffect } from 'react';
 
 export default function Header() {
@@ -98,7 +98,7 @@ export default function Header() {
               <>
                 <NavItem title="Dashboard" route="/patient/dashboard" icon={User} />
                 <NavItem title="Appointments" route="/patient/appointment-booking" icon={Calendar} />
-                <NavItem title="Products" route="/patient/product-recommendations" />
+                <NavItem title="Products" route="/patient/product-recommendations" icon={ShoppingCart} />
                 <NavItem title="Chat" route="/patient/chat" icon={MessageSquare} />
                 <NavItem title="Scan Skin" route="/patient/skin-analysis" icon={Camera} primary />
               </>
@@ -143,7 +143,7 @@ export default function Header() {
               <>
                 <NavItem title="Dashboard" route="/patient/dashboard" icon={User} />
                 <NavItem title="Appointments" route="/patient/appointment-booking" icon={Calendar} />
-                <NavItem title="Products" route="/patient/product-recommendations" />
+                <NavItem title="Products" route="/patient/product-recommendations" icon={ShoppingCart} />
                 <NavItem title="Chat" route="/patient/chat" icon={MessageSquare} />
                 <View className="mt-2 pt-2 border-t border-gray-100">
                     <NavItem title="Scan Skin" route="/patient/skin-analysis" icon={Camera} primary />

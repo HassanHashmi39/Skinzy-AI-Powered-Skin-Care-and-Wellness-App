@@ -99,15 +99,15 @@ export function DoctorNotifications({ onBack }: DoctorNotificationsProps) {
   const getIcon = (type: string) => {
     switch (type) {
       case 'appointment':
-        return <Calendar size={20} color="#2563eb" />;
+        return <Calendar size={20} color="#9333ea" />;
       case 'message':
         return <MessageCircle size={20} color="#9333ea" />;
       case 'patient':
-        return <UserPlus size={20} color="#16a34a" />;
+        return <UserPlus size={20} color="#9333ea" />;
       case 'reminder':
-        return <Clock size={20} color="#ea580c" />;
+        return <Clock size={20} color="#9333ea" />;
       case 'success':
-        return <CheckCircle size={20} color="#16a34a" />;
+        return <CheckCircle size={20} color="#9333ea" />;
       case 'cancellation':
         return <Bell size={20} color="#dc2626" />;
       default:
@@ -118,15 +118,15 @@ export function DoctorNotifications({ onBack }: DoctorNotificationsProps) {
   const getBgColor = (type: string) => {
     switch (type) {
       case 'appointment':
-        return 'bg-blue-50';
+        return 'bg-purple-50';
       case 'message':
         return 'bg-purple-50';
       case 'patient':
-        return 'bg-green-50';
+        return 'bg-purple-50';
       case 'reminder':
-        return 'bg-orange-50';
+        return 'bg-purple-50';
       case 'success':
-        return 'bg-green-50';
+        return 'bg-purple-50';
       case 'cancellation':
         return 'bg-red-50';
       default:

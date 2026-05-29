@@ -107,8 +107,8 @@ export function PatientDetail({ appointmentId, onBack, onOpenChat }: PatientDeta
               <Text className="text-2xl font-bold mb-2 text-center md:text-left">{patient.name || 'Anonymous'}</Text>
               <View className="flex-row flex-wrap gap-4 mt-4 justify-center md:justify-start">
                 <View className="flex-row items-center gap-3 w-full md:w-[48%]">
-                  <View className="w-10 h-10 bg-blue-50 rounded-full items-center justify-center">
-                    <User size={20} color="#2563eb" />
+                  <View className="w-10 h-10 bg-purple-50 rounded-full items-center justify-center">
+                    <User size={20} color="#9333ea" />
                   </View>
                   <View>
                     <Text className="text-gray-600">Age & Gender</Text>
@@ -117,8 +117,8 @@ export function PatientDetail({ appointmentId, onBack, onOpenChat }: PatientDeta
                 </View>
 
                 <View className="flex-row items-center gap-3 w-full md:w-[48%]">
-                  <View className="w-10 h-10 bg-green-50 rounded-full items-center justify-center">
-                    <Phone size={20} color="#16a34a" />
+                  <View className="w-10 h-10 bg-purple-50 rounded-full items-center justify-center">
+                    <Phone size={20} color="#9333ea" />
                   </View>
                   <View>
                     <Text className="text-gray-600">Phone</Text>
@@ -137,8 +137,8 @@ export function PatientDetail({ appointmentId, onBack, onOpenChat }: PatientDeta
                 </View>
 
                 <View className="flex-row items-center gap-3 w-full md:w-[48%]">
-                  <View className="w-10 h-10 bg-orange-50 rounded-full items-center justify-center">
-                    <Calendar size={20} color="#ea580c" />
+                  <View className="w-10 h-10 bg-purple-50 rounded-full items-center justify-center">
+                    <Calendar size={20} color="#9333ea" />
                   </View>
                   <View>
                     <Text className="text-gray-600">Joined</Text>

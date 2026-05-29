@@ -38,6 +38,7 @@ export default function SkinAnalysisPage() {
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [analysisProgress, setAnalysisProgress] = useState(0);
     const [scanLineAnim] = useState(new Animated.Value(0));
+    const [dots, setDots] = useState('');
     
     // Camera State for Web
     const [isCameraActive, setIsCameraActive] = useState(false);
@@ -58,7 +59,15 @@ export default function SkinAnalysisPage() {
                     return prev + 2;
                 });
             }, 100);
-            return () => clearInterval(interval);
+            
+            const dotInterval = setInterval(() => {
+                setDots(prev => prev.length >= 3 ? '' : prev + '.');
+            }, 500);
+
+            return () => {
+                clearInterval(interval);
+                clearInterval(dotInterval);
+            };
         }
     }, [isAnalyzing]);
 
@@ -433,65 +442,78 @@ export default function SkinAnalysisPage() {
 
     if (isAnalyzing) {
         return (
-            <View className="flex-1 bg-white items-center justify-center px-6">
-                <View className="w-full max-w-sm aspect-square bg-gray-100 rounded-[40px] overflow-hidden relative shadow-2xl mb-12">
-                    {image && <Image source={{ uri: image }} className="w-full h-full" />}
-                    
-                    {/* Scanning Animation */}
-                    <Animated.View 
-                        style={{
-                            position: 'absolute',
-                            left: 0,
-                            right: 0,
-                            height: 4,
-                            backgroundColor: '#10b981',
-                            zIndex: 10,
-                            shadowColor: '#10b981',
-                            shadowOffset: { width: 0, height: 0 },
-                            shadowOpacity: 1,
-                            shadowRadius: 10,
-                            transform: [{
-                                translateY: scanLineAnim.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [0, 320] // Assuming ~320px height for aspect-square max-w-sm
-                                })
-                            }]
-                        }}
-                    />
+            <SafeAreaView className="flex-1 bg-white">
+                <ScrollView 
+                    className="flex-1" 
+                    contentContainerStyle={{ flexGrow: 1, alignItems: 'center', paddingTop: 48, paddingBottom: 60, paddingHorizontal: 24 }}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <View 
+                        className="bg-gray-100 rounded-[32px] overflow-hidden relative shadow-2xl mb-8 w-full"
+                        style={{ maxWidth: 360, aspectRatio: 1, maxHeight: 360 }}
+                    >
+                        {image && <Image source={{ uri: image }} className="w-full h-full" style={{ objectFit: 'cover' }} />}
+                        
+                        {/* Scanning Animation */}
+                        <Animated.View 
+                            style={{
+                                position: 'absolute',
+                                left: 0,
+                                right: 0,
+                                height: 4,
+                                backgroundColor: '#10b981',
+                                zIndex: 10,
+                                shadowColor: '#10b981',
+                                shadowOffset: { width: 0, height: 0 },
+                                shadowOpacity: 1,
+                                shadowRadius: 10,
+                                transform: [{
+                                    translateY: scanLineAnim.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0, 360] // Keeping green scanning line exact but adapting to max height
+                                    })
+                                }]
+                            }}
+                        />
 
-                    {/* Overlay Grid */}
-                    <View className="absolute inset-0 opacity-10 border border-green-500/20 pointer-events-none">
-                        <View className="w-full h-full flex-row">
-                            <View className="flex-1 border-r border-green-500" />
-                            <View className="flex-1 border-r border-green-500" />
-                            <View className="flex-1" />
+                        {/* Overlay Grid */}
+                        <View className="absolute inset-0 opacity-10 border border-green-500/20 pointer-events-none">
+                            <View className="w-full h-full flex-row">
+                                <View className="flex-1 border-r border-green-500" />
+                                <View className="flex-1 border-r border-green-500" />
+                                <View className="flex-1" />
+                            </View>
                         </View>
                     </View>
-                </View>
 
-                <Text className="text-3xl font-black text-gray-900 mb-2">Analyzing...</Text>
-                <Text className="text-gray-500 text-center mb-10">Our AI is scanning for 12+ skin indicators. One moment please.</Text>
+                    <Text className="text-3xl font-black text-gray-900 mb-2 text-center w-[180px]">Analyzing{dots}</Text>
+                    <Text className="text-gray-500 text-center mb-6 px-4">Our AI is scanning for 12+ skin indicators. One moment please.</Text>
 
-                <View className="w-full bg-gray-100 h-2 rounded-full overflow-hidden mb-4">
-                    <View 
-                        className="h-full bg-green-500" 
-                        style={{ width: `${analysisProgress}%` }}
-                    />
-                </View>
-                <Text className="text-green-500 font-bold">{analysisProgress}% Complete</Text>
+                    <View className="w-full max-w-xs bg-gray-200 h-6 rounded-full overflow-hidden mb-6 relative justify-center border border-gray-200 shadow-inner">
+                        <View 
+                            className="absolute top-0 bottom-0 left-0 bg-green-500" 
+                            style={{ width: `${analysisProgress}%` }}
+                        />
+                        <View className="absolute inset-0 items-center justify-center pointer-events-none">
+                            <Text className="font-black text-xs tracking-widest" style={{ color: analysisProgress > 50 ? 'white' : '#374151' }}>
+                                {analysisProgress}%
+                            </Text>
+                        </View>
+                    </View>
 
-                <View className="mt-12 items-center">
-                    <Text className="text-gray-400 text-xs italic">Processing securely on-device</Text>
-                </View>
-            </View>
+                    <View className="items-center">
+                        <Text className="text-gray-400 text-xs italic">Processing securely on-device</Text>
+                    </View>
+                </ScrollView>
+            </SafeAreaView>
         );
     }
 
     return (
-        <View className="flex-1 bg-white">
+        <SafeAreaView className="flex-1 bg-white">
             <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
                 {/* Page Title Section */}
-                <View className="max-w-6xl mx-auto w-full px-6 pt-10 pb-6 flex-row items-center">
+                <View className="max-w-6xl mx-auto w-full px-6 pt-4 pb-4 flex-row items-center">
                     <TouchableOpacity 
                         onPress={() => {
                             if (isCameraActive) stopWebCamera();
@@ -511,10 +533,10 @@ export default function SkinAnalysisPage() {
                 <View className="max-w-6xl mx-auto w-full px-6 flex-col lg:flex-row lg:items-start lg:gap-10 pb-16">
                     
                     {/* Left Side: Image Upload / Preview / Camera */}
-                    <View className="w-full lg:w-[55%] mb-10 lg:mb-0">
-                        <View className="w-full mb-8">
+                    <View className="w-full lg:w-[55%] mb-6 lg:mb-0 items-center lg:items-start">
+                        <View className="w-full max-w-lg mb-6">
                             {isCameraActive ? (
-                                <View className="w-full aspect-[4/3] max-h-[500px] bg-black rounded-[40px] overflow-hidden relative shadow-2xl">
+                                <View className="w-full aspect-[4/3] max-h-[350px] bg-black rounded-[32px] overflow-hidden relative shadow-xl">
                                     {Platform.OS === 'web' && (
                                         <video 
                                             ref={videoRef}
@@ -526,33 +548,33 @@ export default function SkinAnalysisPage() {
                                     
                                     {/* 🎯 Face Guide Overlay */}
                                     <View className="absolute inset-0 items-center justify-center pointer-events-none">
-                                        <View className="w-40 h-40 md:w-56 md:h-56 border-2 border-green-500/50 rounded-full flex-col items-center justify-center">
+                                        <View className="w-40 h-40 md:w-48 md:h-48 border-2 border-green-500/50 rounded-full flex-col items-center justify-center">
                                             <View className="w-full h-[2px] bg-green-500/20 absolute top-1/2" />
                                             <View className="h-full w-[2px] bg-green-500/20 absolute left-1/2" />
-                                            <View className="bg-green-500/10 p-2 rounded-lg">
-                                                <Text className="text-green-500 text-[10px] font-bold uppercase tracking-widest">Position Face Here</Text>
+                                            <View className="bg-green-500/10 p-1.5 rounded-lg">
+                                                <Text className="text-green-500 text-[10px] font-bold uppercase tracking-widest">Position Face</Text>
                                             </View>
                                         </View>
                                     </View>
 
-                                    <View className="absolute bottom-8 left-0 right-0 flex-row justify-center gap-6">
+                                    <View className="absolute bottom-4 left-0 right-0 flex-row justify-center gap-4">
                                         <TouchableOpacity 
                                             onPress={captureWebPhoto}
-                                            className="bg-purple-600 p-5 rounded-full shadow-2xl transform active:scale-95 transition-all"
+                                            className="bg-purple-600 p-4 rounded-full shadow-2xl transform active:scale-95 transition-all"
                                         >
-                                            <Camera size={32} color="white" />
+                                            <Camera size={28} color="white" />
                                         </TouchableOpacity>
                                         <TouchableOpacity 
                                             onPress={stopWebCamera}
-                                            className="bg-red-500 p-5 rounded-full shadow-2xl transform active:scale-95 transition-all"
+                                            className="bg-red-500 p-4 rounded-full shadow-2xl transform active:scale-95 transition-all"
                                         >
-                                            <X size={32} color="white" />
+                                            <X size={28} color="white" />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             ) : image ? (
-                                <View className="w-full bg-gray-50 rounded-[40px] overflow-hidden relative shadow-xl border border-gray-100 items-center justify-center p-4">
-                                    <View className="w-full max-h-[320px] aspect-square rounded-[30px] overflow-hidden bg-white shadow-inner">
+                                <View className="w-full bg-gray-50 rounded-[32px] overflow-hidden relative shadow-xl border border-gray-100 items-center justify-center p-4">
+                                    <View className="w-full max-h-[250px] aspect-square rounded-[24px] overflow-hidden bg-white shadow-inner">
                                         <Image 
                                             source={{ uri: image }} 
                                             className="w-full h-full" 
@@ -562,22 +584,22 @@ export default function SkinAnalysisPage() {
                                     
                                     <TouchableOpacity 
                                         onPress={() => setImage(null)}
-                                        className="absolute top-6 right-6 w-10 h-10 bg-black/60 rounded-full items-center justify-center shadow-lg"
+                                        className="absolute top-6 right-6 w-8 h-8 bg-black/60 rounded-full items-center justify-center shadow-lg"
                                     >
-                                        <X size={20} color="white" />
+                                        <X size={16} color="white" />
                                     </TouchableOpacity>
                                     
                                     <View className="flex-row justify-center gap-3 mt-4">
                                         <TouchableOpacity 
                                             onPress={() => setImage(null)}
-                                            className="bg-white px-5 py-2.5 rounded-xl border border-purple-600 shadow-sm flex-row items-center gap-2"
+                                            className="bg-white px-5 py-2 rounded-xl border border-purple-600 shadow-sm flex-row items-center gap-2"
                                         >
                                             <Text className="text-purple-600 font-bold text-sm">Change</Text>
                                         </TouchableOpacity>
                                         {Platform.OS === 'web' && (
                                             <TouchableOpacity 
                                                 onPress={startWebCamera}
-                                                className="bg-white px-5 py-2.5 rounded-xl border border-purple-600 shadow-sm flex-row items-center gap-2"
+                                                className="bg-white px-5 py-2 rounded-xl border border-purple-600 shadow-sm flex-row items-center gap-2"
                                             >
                                                 <Text className="text-purple-600 font-bold text-sm">Retake</Text>
                                             </TouchableOpacity>
@@ -585,15 +607,15 @@ export default function SkinAnalysisPage() {
                                     </View>
                                 </View>
                             ) : (
-                                <View className="w-full border-2 border-dashed border-purple-200 bg-purple-50/20 rounded-[40px] p-8 items-center justify-center min-h-[280px] lg:h-[350px]">
-                                    <View className="w-16 h-16 bg-purple-100 rounded-full items-center justify-center mb-4 shadow-sm">
-                                        <Camera size={32} color="#9333EA" />
+                                <View className="w-full border-2 border-dashed border-purple-200 bg-purple-50/20 rounded-[32px] p-6 items-center justify-center min-h-[220px] lg:h-[260px]">
+                                    <View className="w-14 h-14 bg-purple-100 rounded-full items-center justify-center mb-3 shadow-sm">
+                                        <Camera size={28} color="#9333EA" />
                                     </View>
-                                    <Text className="text-gray-400 font-bold text-lg text-center mb-1">No image selected</Text>
-                                    <Text className="text-gray-400 text-xs text-center px-10">Capture or upload a photo of your skin</Text>
+                                    <Text className="text-gray-400 font-bold text-base text-center mb-1">No image selected</Text>
+                                    <Text className="text-gray-400 text-xs text-center px-6">Capture or upload a photo of your skin</Text>
                                     
                                     {cameraError && (
-                                        <Text className="text-red-500 text-[10px] text-center mt-4 px-4 bg-red-50 py-1.5 rounded-lg">{cameraError}</Text>
+                                        <Text className="text-red-500 text-[10px] text-center mt-3 px-4 bg-red-50 py-1.5 rounded-lg">{cameraError}</Text>
                                     )}
                                 </View>
                             )}
@@ -601,31 +623,31 @@ export default function SkinAnalysisPage() {
 
                         {/* Action Buttons */}
                         {!isCameraActive && (
-                            <View className="w-full gap-5">
+                            <View className="w-full max-w-lg">
                                 {!image ? (
                                     <View className="flex-col md:flex-row gap-4">
                                         <TouchableOpacity 
                                             onPress={takePhoto}
-                                            className="flex-1 py-5 bg-purple-600 rounded-[24px] flex-row items-center justify-center gap-3 shadow-xl shadow-purple-200"
+                                            className="flex-1 py-4 bg-purple-600 rounded-[20px] flex-row items-center justify-center gap-2 shadow-lg shadow-purple-200"
                                         >
-                                            <Camera size={22} color="white" />
+                                            <Camera size={20} color="white" />
                                             <Text className="text-white font-black text-lg">Live Camera</Text>
                                         </TouchableOpacity>
                                         
                                         <TouchableOpacity 
                                             onPress={pickImage}
-                                            className="flex-1 py-5 bg-white border-2 border-purple-600 rounded-[24px] flex-row items-center justify-center gap-3"
+                                            className="flex-1 py-4 bg-white border-2 border-purple-600 rounded-[20px] flex-row items-center justify-center gap-2"
                                         >
-                                            <ImageIcon size={22} color="#9333EA" />
+                                            <ImageIcon size={20} color="#9333EA" />
                                             <Text className="text-purple-600 font-black text-lg">Upload Photo</Text>
                                         </TouchableOpacity>
                                     </View>
                                 ) : (
                                     <TouchableOpacity 
                                         onPress={startAnalysis}
-                                        className="w-full py-6 bg-purple-600 rounded-[24px] flex-row items-center justify-center gap-3 shadow-2xl shadow-purple-200 transform active:scale-95 transition-all"
+                                        className="w-full py-5 bg-purple-600 rounded-[20px] flex-row items-center justify-center gap-2 shadow-xl shadow-purple-200 transform active:scale-95 transition-all"
                                     >
-                                        <Sparkles size={24} color="white" />
+                                        <Sparkles size={20} color="white" />
                                         <Text className="text-white font-black text-xl">Start Analysis Now</Text>
                                     </TouchableOpacity>
                                 )}
@@ -669,7 +691,7 @@ export default function SkinAnalysisPage() {
                 </View>
                 <Footer />
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
 
